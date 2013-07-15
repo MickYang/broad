@@ -8,14 +8,21 @@ using System.Web;
 /// </summary>
 public class operation_log
 {
+
+    string passage_id;//文章编号
+    string reader_id;//用户编号
+    string op_id;//操作编号
+
 	public operation_log()
 	{
 		//
 		// TODO: Add constructor logic here
 		//
-        int passage_id;//文章编号
-		int reader_id;//用户编号
-        int op_id;//操作编号
+       
 
 	}
+
+    
+
+
 }

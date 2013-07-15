@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using passage;
 
 /// <summary>
 /// 用户分为两种，普通同学和班长
@@ -10,20 +11,22 @@ using System.Web;
 /// </summary>
 public class user
 {
+    public string user_id{ get; set; }//编号
+　　public string name{ get; set; } //用户名 
+    public string sex{ get; set; } //性别
+    public int age{ get; set; }    //年龄
+    public int right{ get; set; }  //权限
+    public string user_password{ get; set; }   //密码
+　　public string location{ get; set; }    //位置
+    public int status{ get; set; } //状态
+	public string email{ get; set; }  //邮箱
 	public user()
+
 	{
 		//
 		// TODO: Add constructor logic here
 		//
-        string user_id; //编号
-　　　　string name; //用户名 
-        string sex; //性别
-        int age;    //年龄
-        int right;  //权限
-        string user_password;   //密码
-　　　　string location;    //位置
-        int status; //状态
-		string email;   //邮箱
-
-	}
+       
+	} 
+    
 }
