@@ -17,6 +17,8 @@ public partial class login : System.Web.UI.Page
         if (user.checkUser(txtUsername.Text, txtPassword.Text))
         {
             lblErrorMsg.Text = "Login success";
+            Session.Add("user_info", user);
+            Response.Redirect("sessiontest.aspx");
         }
         else
         {
