@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using user;
+//using user;
 
 /// <summary>
 /// 系统管理员
@@ -21,7 +21,7 @@ public class admin
             
 	}
 
-    public void RemoveUser(user u)
+    public void RemoveUser(User u)
      { 
      }
 

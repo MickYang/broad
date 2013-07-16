@@ -11,6 +11,11 @@
     <form id="form1" runat="server">
     <div>
         <h1>This page is about us.</h1>
+        <p>
+            <asp:TextBox ID="txtMessage" runat="server"></asp:TextBox>
+            <asp:Button ID="btnEncrypt" runat="server" OnClick="btnEncrypt_Click" Text="Button" />
+            <asp:Label ID="lblMD5" runat="server"></asp:Label>
+        </p>
     </div>
     </form>
 </body>

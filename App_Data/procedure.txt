@@ -1,0 +1,13 @@
+﻿ALTER PROCEDURE [dbo].[proc_CheckUser]
+	@username AS char(20) ,
+  @password AS char(128) ,
+  @retVal AS int OUTPUT 
+AS
+BEGIN
+  -- routine body goes here, e.g.
+  -- SELECT 'Navicat for SQL Server'
+	IF EXISTS(SELECT * FROM [user] WHERE [user].username=@username AND [user].password=@password)
+		SET @retVal=1
+	ELSE
+		SET @retVal=0
+END

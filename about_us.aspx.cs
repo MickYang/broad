@@ -11,4 +11,9 @@ public partial class Scripts_about_us : System.Web.UI.Page
     {
 
     }
+    protected void btnEncrypt_Click(object sender, EventArgs e)
+    {
+        string message = txtMessage.Text;
+        lblMD5.Text = Encryption.getMD5(message);
+    }
 }
