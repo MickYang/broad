@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     2013/7/16 15:55:10                           */
+/* Created on:     2013/7/17 14:53:36                           */
 /*==============================================================*/
 
 
@@ -16,6 +16,13 @@ if exists (select 1
    where r.fkeyid = object_id('broad_unread') and o.name = 'FK_BROAD_UN_U_B_USER')
 alter table broad_unread
    drop constraint FK_BROAD_UN_U_B_USER
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('comment_log') and o.name = 'FK_COMMENT__COM_PSG_PASSAGES')
+alter table comment_log
+   drop constraint FK_COMMENT__COM_PSG_PASSAGES
 go
 
 if exists (select 1
@@ -90,6 +97,15 @@ if exists (select 1
            where  id = object_id('broad_unread')
             and   type = 'U')
    drop table broad_unread
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('comment_log')
+            and   name  = 'com_psg_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index comment_log.com_psg_FK
 go
 
 if exists (select 1
@@ -223,7 +239,8 @@ go
 create table comment_log (
    log_id               int                  not null,
    user_id              char(20)             null,
-   replied_user         char(20)             null,
+   passage_id           char(5)              null,
+   use_user_id          char(20)             null,
    comment              char(2000)           null,
    if_reply             char(1)              null,
    replied_comment      char(2000)           null,
@@ -245,7 +262,15 @@ go
 /* Index: u_cl_reply_FK                                         */
 /*==============================================================*/
 create index u_cl_reply_FK on comment_log (
-replied_user ASC
+use_user_id ASC
+)
+go
+
+/*==============================================================*/
+/* Index: com_psg_FK                                            */
+/*==============================================================*/
+create index com_psg_FK on comment_log (
+passage_id ASC
 )
 go
 
@@ -265,7 +290,7 @@ go
 create table passages (
    passage_id           char(5)              not null,
    user_id              char(20)             null,
-   content              char(5000)           null,
+   passage_content      char(5000)           null,
    passage_name         char(50)             null,
    passage_type         char(2)              null,
    like_num             int                  null,
@@ -295,9 +320,9 @@ create table "user" (
    password             char(128)            null,
    sex                  char(6)              null,
    age                  char(2)              null,
-   user_right           char(2)              null,
+   user_right           smallint             null,
    grade                char(4)              null,
-   class                char(2)              null,
+   class                smallint             null,
    status               char(1)              null,
    email                char(50)             null,
    constraint PK_USER primary key nonclustered (user_id)
@@ -351,13 +376,19 @@ alter table broad_unread
 go
 
 alter table comment_log
+   add constraint FK_COMMENT__COM_PSG_PASSAGES foreign key (passage_id)
+      references passages (passage_id)
+         on update cascade on delete cascade
+go
+
+alter table comment_log
    add constraint FK_COMMENT__U_CL_USER foreign key (user_id)
       references "user" (user_id)
          on update cascade on delete cascade
 go
 
 alter table comment_log
-   add constraint FK_COMMENT__U_CL_REPL_USER foreign key (replied_user)
+   add constraint FK_COMMENT__U_CL_REPL_USER foreign key (use_user_id)
       references "user" (user_id)
          on update no action on delete no action
 go
@@ -385,6 +416,7 @@ alter table user_operation
       references "user" (user_id)
          on update cascade on delete cascade
 go
+
 
 
 

@@ -18,7 +18,7 @@ public partial class login : System.Web.UI.Page
         {
             lblErrorMsg.Text = "Login success";
             Session.Add("user_info", user);
-            Response.Redirect("sessiontest.aspx");
+            Response.Redirect("transactioncenter.aspx");
         }
         else
         {

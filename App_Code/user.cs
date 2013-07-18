@@ -34,9 +34,9 @@ public class User
        
 	}
 
-    public bool checkUser(string username, string password)
+    public bool checkUser(string userid, string password)
     {
-        name = username;
+        user_id = userid;
         DBClass dbObj = new DBClass();
         SqlCommand cmd = dbObj.ChangeProcToCmd("proc_CheckUser");
 
@@ -49,15 +49,15 @@ public class User
         //         new SqlParameter("@retVal", SqlDbType.Int,4),
 
         //     };
-        //parameters[0].Value = user_id;
-        //parameters[1].Value = Encryption.getMD5(password);
+        //parameters[0].Value).ToString().Trim() = user_id;
+        //parameters[1].Value).ToString().Trim() = Encryption.getMD5(password);
         //parameters[2].Direction = ParameterDirection.Output;
 
         //cmd.Parameters.Add(parameters[0]);
         //cmd.Parameters.Add(parameters[1]);
         //cmd.Parameters.Add(parameters[2]);
 
-        cmd.Parameters.AddWithValue("@username", username);
+        cmd.Parameters.AddWithValue("@userid", user_id);
         cmd.Parameters.AddWithValue("@password", Encryption.getMD5(password));
         SqlParameter para3 = new SqlParameter("@retVal", SqlDbType.Int);
         para3.Direction = ParameterDirection.Output;
@@ -67,12 +67,12 @@ public class User
         //SqlParameter para1 = new SqlParameter();
         //para1.ParameterName = "@username";
         //para1.SqlDbType = SqlDbType.Char;
-        //para1.Value = user_id;
+        //para1.Value).ToString().Trim() = user_id;
         //cmd.Parameters.Add(para1);
         //SqlParameter para2 = new SqlParameter();
         //para2.ParameterName = "@password";
         //para2.SqlDbType = SqlDbType.Char;
-        //para2.Value = Encryption.getMD5(password);
+        //para2.Value).ToString().Trim() = Encryption.getMD5(password);
         //cmd.Parameters.Add(para2);
         //SqlParameter para3 = new SqlParameter();
         //para3.ParameterName = "@retVal";
@@ -92,9 +92,9 @@ public class User
     public void fillData()
     {
         DBClass dbObj = new DBClass();
-        SqlCommand cmd = dbObj.ChangeProcToCmd("proc_getUser");
-        cmd.Parameters.AddWithValue("@username", name);
-        //SqlParameter para2 = new SqlParameter("@username",SqlDbType.Char);
+        SqlCommand cmd = dbObj.ChangeProcToCmd("proc_GetUser");
+        cmd.Parameters.AddWithValue("@userid", user_id);
+        SqlParameter para2 = new SqlParameter("@username",SqlDbType.Char,20);
         SqlParameter para3 = new SqlParameter("@sex",SqlDbType.Char,6);
         SqlParameter para4 = new SqlParameter("@age",SqlDbType.Char,2);
         SqlParameter para5 = new SqlParameter("@user_right",SqlDbType.Char,2);
@@ -103,7 +103,7 @@ public class User
         SqlParameter para8 = new SqlParameter("@status",SqlDbType.Char,1);
         SqlParameter para9 = new SqlParameter("@email",SqlDbType.Char,50);
 
-        //para2.Direction = ParameterDirection.Output;
+        para2.Direction = ParameterDirection.Output;
         para3.Direction = ParameterDirection.Output;
         para4.Direction = ParameterDirection.Output;
         para5.Direction = ParameterDirection.Output;
@@ -112,7 +112,7 @@ public class User
         para8.Direction = ParameterDirection.Output;
         para9.Direction = ParameterDirection.Output;
 
-        //cmd.Parameters.Add(para2);
+        cmd.Parameters.Add(para2);
         cmd.Parameters.Add(para3);
         cmd.Parameters.Add(para4);
         cmd.Parameters.Add(para5);
@@ -123,13 +123,15 @@ public class User
 
         cmd.ExecuteNonQuery();
 
-        sex = (string)para3.Value;
-        age = (string)para4.Value;
-        user_right = (string)para5.Value;
-        user_grade = (string)para6.Value;
-        user_class = (string)para7.Value;
-        status = (string)para8.Value;
-        email = (string)para9.Value;
-
+        name = ((string)para2.Value).ToString().Trim();
+        sex = ((string)para3.Value).ToString().Trim();
+        age = ((string)para4.Value).ToString().Trim();
+        user_right = ((string)para5.Value).ToString().Trim();
+        user_grade = ((string)para6.Value).ToString().Trim();
+        user_class = ((string)para7.Value).ToString().Trim();
+        status = ((string)para8.Value).ToString().Trim();
+        email = ((string)para9.Value).ToString().Trim();
+        
+        dbObj.Close();
     }
 }
